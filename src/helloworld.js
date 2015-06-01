@@ -1,4 +1,2 @@
-React.render(
-  <h1>Hello, world!</h1>,
-  document.getElementById('example')
-);
+
+React.render(<App cat={5} />, document.body);

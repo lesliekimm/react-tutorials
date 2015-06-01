@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://fb.me/react-0.12.2.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+  </head>
+  <body>
+  <script type="text/jsx">
+  var Dispatcher = require('flux').Dispatcher;
+  var AppDispatcher = new Dispatcher();
+
+  AppDispatcher.handleViewAction = function(action){
+    this.dispatch({
+      source: 'VIEW_ACTION',
+      action: action
+    });
+  }
+
+  module.exports = AppDispatcher;
+  </script>
+  </body>
+</html>
