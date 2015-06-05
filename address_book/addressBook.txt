@@ -1,0 +1,31 @@
+- code grows fast, up to thousands of lines
+- split codes into multiple files
+- each file will implements well defined & isolated part of app
+- node.js --> files are called modules
+- each module can be implement other modules
+- module can define object with methods
+- to store JS objects as text (strings), we use JSON which is a format that
+  can encode JS objects to strings
+	For a JS object like:
+	 { name: 'John Smith',
+	   number: '604-123-9999'
+	 }
+	the equivalent JSON string would be:
+	 { "name": "John Smith", "number": "604-123-9999" }
+- in JSON format, both keys and values are double quoted & the most impt
+  difference is that the full JSON is actually a string
+- synchronous vs asynchronous functions
+	syncrhonous functions must be executed in order
+		console.log() is a synchronous function
+	asynchronous functions will return control while continuing execution
+	of program
+		when reading files, you want asynchronous functions
+- use jsonfile package to read JSON sting from file & convert to JS object
+	the JSON string:
+		[ { "name": "John Smith", "number": "604-123-9090" }, { "name": "Bob Leon", "number": "604-555-1212" } ]
+	will be read & converted to JS array containing objects:
+		[ { name: "John Smith", number: "604-123-9090" },
+		  { name: "Bob Leon", number: "604-555-1212" } ]
+			name and number keys are not doubled quoted b/c they
+			are JS object properties
+
