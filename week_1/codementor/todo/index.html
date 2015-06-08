@@ -1,0 +1,45 @@
+<html>
+<title>LK ToDo App</title>
+<head>
+<script src="http://fb.me/react-0.12.2.js"></script>
+<script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+</head>
+<body>
+<script type="text/jsx" src="scripts/require.js">
+// "use strict" changes previously accepted bad syntax into real errors
+"use strict";
+
+var React = require("react"),
+  _ = require("underscore"),
+
+  List = require("./list"),
+  Modal = require(".modal"),
+
+  dispatcher = require("dispatcher"),
+  emitter = require("emitter"),
+  constants = require("constants").todo;
+
+var Todo = React.createClass({
+  getInitialState: function() {
+    return {
+      todos: [],
+      test: "Hello, world!"   // for diagnostics
+    }
+  },
+
+  componentWillMount: function() {
+    emitter.on(constants.changed, function(todos) {
+      this.setState({ todos: todos });
+    }.bind(this));
+  },
+
+  render: function() {
+      return <div>{this.state.test}</div>
+  }
+});
+
+React.render(new Todo(), document.body);
+
+</script>
+</body>
+</html>

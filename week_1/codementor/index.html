@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://fb.me/react-0.12.2.js"></script>
+  <script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+</head>
+<body>
+<script type="text/jsx">
+
+var FancyButton = React.createClass({
+  render: function() {
+    return <button onClick={this.props.onClick}>
+      <i className={"fa " + this.props.icon}></i>
+      <span>{this.props.text}</span>
+    </button>
+  }
+});
+
+var HelloWorld = React.createClass({
+    getInitialState: function() {
+        return {
+            counter: 0
+        };
+    },
+
+    increment: function() {
+        this.setState({counter: this.state.counter + 1});
+    },
+
+    render: function() {
+        return <div>
+            <div>{this.state.counter}</div>
+            <FancyButton text="Increment!" icon="fa-arrow-circle-o-up" onClick={this.increment} />
+        </div>;
+    }
+});
+
+// var Count = React.createClass({
+//     getInitialState: function() {
+//         return {
+//             items: []
+//         };
+//     },
+//
+//     componentWillMount: function() {
+//         emitter.on("store-changed", function(items) {
+//             this.setState({ items: items });
+//         }.bind(this));
+//     },
+//
+//     componentDidMount: function() {
+//         dispatcher.dispatch({ type: "get-all-items" });
+//     },
+//
+//     render: function() {
+//         var items = this.state.items;
+//         return <div>{items.length}</div>;
+//     }
+// });
+//
+// var Store = function() {
+//     dispatcher.register(function(payload) {
+//         switch (payload.type) {
+//             case "get-all-items":
+//                 this._all();
+//                 break;
+//         }
+//     }.bind(this));
+//
+//     this._all = function() {
+//         $.get("/some/url", function(items) {
+//             this._notify(items);
+//         }.bind(this));
+//     }
+//
+//     this._notify = function(items) {
+//         emitter.emit("store-changed", items);
+//     };
+// };
+//
+// var ItemStore = new Store();
+
+
+React.render(new HelloWorld(), document.body);
+</script>
+</pre>
+</body>
+</html>

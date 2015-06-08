@@ -1,0 +1,218 @@
+// React: UI library dev by FB to facilitate creation of interactive, stateful & resuable
+   UI components
+// Both client & server side
+// Uses Virtual DOM that selectively renders subtrees of nodes based upon state changes
+   // Does least amount of DOM manipulation to keep components up to date
+   // When you make changes to an object, React runs a "diffing" algorithm which IDs what
+      has been changed
+   // Then reconciliation where it updates DOM w/ results of diff
+      // React only changes what has been updated
+
+// Setting up page
+   // Include react.js and JSXTransformer.js
+   // Write your component in script node w/ type="text/jsx"
+   // Components are an element
+
+<!----------------------------
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="build/react.js"></script>
+    <script src="build/JSXTransformer.js"></script>
+  </head>
+  <body>
+    <div id="mount-point"></div>
+    <script type="text/jsx">
+      // React Code Goes Here
+    </script>
+  </body>
+</html>
+----------------------------->
+   // div mount-point is the parent container
+   // This is easy way to get started but Browserify or webpack will be used later to
+      write components in separate files
+
+// JSX is JS XML syntax: allows you to write HTML-ish tags in your JS
+   // Statically-typed, OO programming language
+
+<!----------------------------
+<script type="text/jsx">
+    /** @jsx React.DOM */
+    React.render(
+        <h1>Hello, world!</h1>,
+        document.getElementById('myDiv')
+    );
+</script>
+----------------------------->
+
+   // without JSX
+<!----------------------------
+/** @jsx React.DOM */
+React.render(
+  React.DOM.h1(null, 'Hello, world!'),
+  document.getElementById('myDiv')
+);
+----------------------------->
+   // /** @jsx React.DOM */ tells React we/re using JSX & this markup needs to be
+      transformed so you must include when using JSX syntax
+
+   // When using render method, first argument is component you want to render and
+      second is DOM node it should mount to
+   // Use createClass method to create custom component classes which takes an object
+      of specifications as its argument
+
+<!----------------------------
+var MyComponent = React.createClass({
+    render: function(){
+        return (
+            <h1>Hello, world!</h1>
+        );
+    }
+});
+
+React.render(
+    <MyComponent/>,
+    document.getElementById('myDiv')
+);
+----------------------------->
+   // Create class and then render it to document
+
+// The attributes of components are called props and available in our component as
+   this.props & can be used to render dynamic data in render method
+
+<!----------------------------
+var MyComponent = React.createClass({
+    render: function(){
+        return (
+            <h1>Hello, {this.props.name}!</h1>
+        );
+    }
+});
+
+React.render(<MyComponent name="Handsome" />, document.getElementById('myDiv'));
+----------------------------->
+// render method is only required spec for creating a component
+   // Lifecycle methods
+      // componentWillMount: invoked once on both client & server before rendering
+      // componentDidMount: invoked once on client after rendering occurs
+      // shouldComponentUpdate: return value determins if component should update
+      // componentWillUnmount: invoked prior to unmounting component
+   // Specs
+      // getInitialState: return value is initial value for state
+      // getDefaultProps: sets fallback prop values if props aren't supplied
+      // mixins: array of objects, used to extend current components functionality
+   // State
+      // Every component has state and props object
+         // setState sets the state: triggers UI updates
+         // use getInitialState to set initial state before interaction occurs
+
+<!----------------------------
+var MyComponent = React.createClass({
+    getInitialState: function(){
+        return {
+            count: 5
+        }
+    },
+    render: function(){
+        return (
+            <h1>{this.state.count}</h1>
+        )
+    }
+});
+----------------------------->
+
+// React has built in cross browswer events system
+   // Events are attached as properties of components and can trigger methods
+
+<!----------------------------
+/** @jsx React.DOM */
+
+var Counter = React.createClass({
+  incrementCount: function(){
+    this.setState({
+      count: this.state.count + 1
+    });
+  },
+  getInitialState: function(){
+     return {
+       count: 0
+     }
+  },
+  render: function(){
+    return (
+      <div class="my-component">
+        <h1>Count: {this.state.count}</h1>
+        <button type="button" onClick={this.incrementCount}>Increment</button>
+      </div>
+    );
+  }
+});
+
+React.render(<Counter/>, document.getElementById('mount-point'));
+----------------------------->
+
+// Unidirectional data flow: app data flows unidirectionally via the state and
+   props objects as opposed to two-way binding
+   // In multi component heirachy, common parent component should manage state
+      and pass it down the chain via props
+   // Your state should be updated using setState method to ensure UI refresh
+      will occur
+      // Resulting values should be passed down to child components using
+         attributes accessible in said children via this.props
+
+<!----------------------------
+/** @jsx React.DOM */
+
+var FilteredList = React.createClass({
+  filterList: function(event){
+    var updatedList = this.state.initialItems;
+    updatedList = updatedList.filter(function(item){
+      return item.toLowerCase().search(
+        event.target.value.toLowerCase()) !== -1;
+    });
+    this.setState({items: updatedList});
+  },
+  getInitialState: function(){
+     return {
+       initialItems: [
+         "Apples",
+         "Broccoli",
+         "Chicken",
+         "Duck",
+         "Eggs",
+         "Fish",
+         "Granola",
+         "Hash Browns"
+       ],
+       items: []
+     }
+  },
+  componentWillMount: function(){
+    this.setState({items: this.state.initialItems})
+  },
+  render: function(){
+    return (
+      <div className="filter-list">
+        <input type="text" placeholder="Search" onChange={this.filterList}/>
+      <List items={this.state.items}/>
+      </div>
+    );
+  }
+});
+
+var List = React.createClass({
+  render: function(){
+    return (
+      <ul>
+      {
+        this.props.items.map(function(item) {
+          return <li key={item}>{item}</li>
+        })
+       }
+      </ul>
+    )
+  }
+});
+
+React.render(<FilteredList/>, document.getElementById('mount-point'));
+----------------------------->

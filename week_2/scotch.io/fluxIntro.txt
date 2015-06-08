@@ -1,0 +1,226 @@
+// Flux is an architecture FB uses internally when working w/ React
+   // NOT a framework or library: complements React & concept of unidirectional data flow
+   // FB provides repo that includes Dispatcher library
+      // Dispatcher is a sort of global pub/sub handler that BC payloads to registered
+         callbakcs
+   // Typical FLux architecture leverages Dispatcher library and NodeJS' EventEmitter module
+      in order to set up an event sys that helps manage apps state
+   // Individual components of Flux
+      // Actions: helper methods that facilitate passing data to Dispatcher
+      // Dispatcher: receives actions and BC payloads to registered callbacks
+      // Stores: containers for app state & logic that have callbacks to dispatcher
+      // Controller Views: React components that grab state from Stores and pass it down
+         via props to child components
+
+// Dispatcher: manager of the entire process & central hub for app
+   // Receives actions & dispatches actions & data to registered callbacks
+   // BCs payload to all of its registered callbacks & includes functionality that
+      allows you to invoke the callbacks in a specific order
+   // Only one dispatcher
+
+<!----------------------------
+var Dispatcher = require('flux').Dispatcher;
+var AppDispatcher = new Dispatcher();
+
+AppDispatcher.handleViewAction = function(action) {
+  this.dispatch({
+    source: 'VIEW_ACTION',
+    action: action
+  });
+}
+
+module.exports = AppDispatcher;
+----------------------------->
+   // dispatch method is called which BC action payload to all its registered callbacks
+   // this action can then be acted upon in Stores & results in state update
+   // Dispatcher module has ability to defined dependencies & marshalls the callbacks on
+      on Stores
+      // If one part of app is dependent upon another part being updated first, Dispatcher's
+         waitFor method will be useful
+         // Store return value of Dispatcher's registration method on our Store as
+            dispatcherIndex
+
+<!----------------------------
+ShoeStore.dispatcherIndex = AppDispatcher.register(function(payload) {
+
+});
+----------------------------->
+         // Then in our Store, when handling dispatched action we use Dispatcher's waitFor
+            method to ensure ShoeStore has been updated:
+
+<!----------------------------
+case 'BUY_SHOES':
+  AppDispatcher.waitFor([
+    ShoeStore.dispatcherIndex
+  ], function() {
+    CheckoutStore.purchaseShoes(ShoeStore.getSelectedShoes());
+  });
+  break;
+----------------------------->
+
+// In Flux, Stores manage app state for a particular domain in your app
+   // This means that per app section, stores manage the data, data retrieval methods &
+      dispatcher callbacks
+
+<!----------------------------
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var ShoeConstants = require('../constants/ShoeConstants');
+var EventEmitter = require('events').EventEmitter;
+var merge = require('react/lib/merge');
+
+// Internal object of shoes
+var _shoes = {};
+
+// Method to load shoes from action data
+function loadShoes(data) {
+  _shoes = data.shoes;
+}
+
+// Merge our store with Node's Event Emitter
+var ShoeStore = merge(EventEmitter.prototype, {
+
+  // Returns all shoes
+  getShoes: function() {
+    return _shoes;
+  },
+
+  emitChange: function() {
+    this.emit('change');
+  },
+
+  addChangeListener: function(callback) {
+    this.on('change', callback);
+  },
+
+  removeChangeListener: function(callback) {
+    this.removeListener('change', callback);
+  }
+
+});
+
+// Register dispatcher callback
+AppDispatcher.register(function(payload) {
+  var action = payload.action;
+  var text;
+
+  // Define what to do for certain actions
+  switch(action.actionType) {
+    case ShoeConstants.LOAD_SHOES:
+
+      // Call internal method based upon dispatched action
+      loadShoes(action.data);
+      break;
+
+    default:
+      return true;
+  }
+
+  // If action was acted upon, emit change event
+  ShoeStore.emitChange();
+
+  return true;
+});
+
+module.exports = ShoeStore;
+----------------------------->
+   // Most impt thing is extending our store with NodeJS's EventEmitter, which allows our
+      store to listen/BC events
+      // Allows our Views/Components to update based on those events
+      // B/c Controller View listens to Stores, this lets our Controller View know that app
+         state has changed & its time to retrieve state to keep things fresh
+      // Also registered callback w/ AppDispatcher using its register method
+         // This means our Store is now listening to AppDispatcher BCs
+         // Switch statement determines if there are relevant actions to take for a given BC
+
+// Action Creators: collections of methods that are called w/in views to send actions to
+   Dispatcher
+   // Actions are the actual payloads that are delivered via the dispatcher
+      // FB uses them as such: action type constants are used to define what action should
+         take place & are sent along w/ action data
+      // Instead of registered callbacks, these actions are handled according to their action
+         type & methods can be called w/ action data as arguments
+
+<!----------------------------
+var keyMirror = require('react/lib/keyMirror');
+
+module.exports = keyMirror({
+  LOAD_SHOES: null
+});
+----------------------------->
+   // This is a constants definition
+   // The keyMirror library is used to mirror our keys so our value matches our key definition
+
+<!----------------------------
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var ShoeStoreConstants = require('../constants/ShoeStoreConstants');
+
+var ShoeStoreActions = {
+
+  loadShoes: function(data) {
+    AppDispatcher.handleAction({
+      actionType: ShoeStoreConstants.LOAD_SHOES,
+      data: data
+    })
+  }
+
+};
+
+module.exports = ShoeStoreActions;
+----------------------------->
+   // This is the corresponding Action Creator where we created a method on our ShoeStoreActions
+      object that calls our dispatcher w/ the data we provided
+   // ShoeStoreActions.loadShoes(ourData) is called to send our payload to Dispatcher which will
+      BC it & ShoeStore will "hear" the event & call a method that loads shoes
+
+// Controller views are React components that listen to change events & retrieve Application
+   state from Stores
+   // That data is passed down to their child components via props
+
+<!----------------------------
+/** @jsx React.DOM */
+
+var React = require('react');
+var ShoesStore = require('../stores/ShoeStore');
+
+// Method to retrieve application state from store
+function getAppState() {
+  return {
+    shoes: ShoeStore.getShoes()
+  };
+}
+
+// Create our component class
+var ShoeStoreApp = React.createClass({
+
+  // Use getAppState method to set initial state
+  getInitialState: function() {
+    return getAppState();
+  },
+
+  // Listen for changes
+  componentDidMount: function() {
+    ShoeStore.addChangeListener(this._onChange);
+  },
+
+  // Unbind change listener
+  componentWillUnmount: function() {
+    ShoesStore.removeChangeListener(this._onChange);
+  },
+
+  render: function() {
+    return (
+      <ShoeStore shoes={this.state.shoes} />
+    );
+  },
+
+  // Update view state when change event is received
+  _onChange: function() {
+    this.setState(getAppState());
+  }
+
+});
+
+module.exports = ShoeStoreApp;
+----------------------------->
+   // We listen for change events using addChangeListener & update our app state when event is
+      received
