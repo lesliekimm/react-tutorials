@@ -10,27 +10,27 @@ var _ = require('underscore');
 // testing, and so on.
 
 // Define initial data points
-var _toDo = {}, _selected = null;
+var _toDoList = {}, _selected = null;
 
 // Define private methods loadToDoDta and setSelected
 
 // Method to load to do data from mock API
 function loadToDoData(data){
-  _toDo = data[0];
+  _toDoList = data[0];
   _selected = data[0].variants[0];
 }
 
 // Method to set the currently selected To Do items
 function setSelected(index) {
-  _selected = _toDo.variants[index];
+  _selected = _toDoList.variants[index];
 }
 
 // Extend ToDoStore with EventEmitter to add eventing capabilities
 // These methods can be called after require'ing our Store w/in a View
-var ToDoStore = _.extend({}, EventEmitter.prototype, {
+var ToDoListStore = _.extend({}, EventEmitter.prototype, {
   // Return To Do data
-  getToDo: function() {
-    return _toDo;
+  getToDoList: function() {
+    return _toDoList;
   },
 
   // Return selected To Do items
@@ -79,9 +79,9 @@ AppDispatcher.register(function(payload) {
   }
 
   // If action was responded to, emit change events
-  ToDoStore.emitChange();
+  ToDoListStore.emitChange();
 
   return true;
 });
 
-module.exports = ToDoStore;
+module.exports = ToDoListStore;
