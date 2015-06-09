@@ -38,7 +38,7 @@ var FluxToDoApp = React.createClass({
     return getToDoState();
   },
 
-  // Add change listeners to stores
+  // Add change listeners to stores: allows us to receive change events
   // componentDidMount: invoked once on client after rendering occurs
   componentDidMount: function() {
     ToDoListStore.addChangeListener(this._onChange);
@@ -46,7 +46,7 @@ var FluxToDoApp = React.createClass({
     CompletedStore.addChangeListener(this._onChange);
   },
 
-  // Remove change listeners from stores
+  // Remove change listeners from stores: remove change events wehn/if component is unmounted.
   // componentWillUnmount: invoked prior to unmounting component
   componentWillUnmount: function() {
     ToDoListStore.removeChangeListener(this._onChange);
@@ -56,6 +56,8 @@ var FluxToDoApp = React.createClass({
 
 
   // Render child components, passing state via props
+  // We compose our component using FluxToDoList, FluxToDo, FluxCompleted and pass our
+  // state props down to them using component properties
   render: function() {
     return (
       <div className="flux-toDo-app">
