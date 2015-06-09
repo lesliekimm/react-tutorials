@@ -15,7 +15,7 @@ var _toDoList = {}, _selected = null;
 // Define private methods loadToDoDta and setSelected
 
 // Method to load to do data from mock API
-function loadToDoData(data){
+function loadToDoListData(data){
   _toDoList = data[0];
   _selected = data[0].variants[0];
 }
@@ -66,7 +66,7 @@ AppDispatcher.register(function(payload) {
   switch(action.actionType) {
     // Respond to RECEIVE_DATA action
     case FluxToDoConstants.RECEIVE_DATA:
-      loadToDoData(action.data);
+      loadToDoListData(action.data);
       break;
 
     // Respond to SET_SELECTED action

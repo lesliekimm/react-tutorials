@@ -55,7 +55,7 @@ var FluxToDoActions = {
     },
 
     // Receive initial To Do items data
-    receiveToDo: function(data) {
+    receiveToDoList: function(data) {
       AppDispatcher.handleAction({
         actionType: FluxToDoConstants.RECEIVE_DATA,
         data: data

@@ -5,28 +5,34 @@ module.exports = {
     // Storage interface provides access to session/localStorage for a particular domain
     // and allows you to add, modify or delete stored data items.
     localStorage.clear();
-    localStorage.setItem('toDo', JSON.stringify([
+    localStorage.setItem('toDoList', JSON.stringify([
       {
         id: '12345',
-        name: 'choices'
+        name: 'Items'
         description: 'A list of To Do items that can be selected.'
         variants: [
           {
-            item: 'grocery shopping',
+            itemID: '0001',
+            item: 'grocery shopping'
           },
           {
-            item: 'clean house',
+            itemID: '0002',
+            item: 'clean house'
           },
           {
+            itemID: '0003',
             item: 'mow lawn'
           },
           {
+            itemID: '0004',
             item: 'walk dogs'
           },
           {
+            itemID: '0005',
             item: 'shopping'
           },
           {
+            itemID: '0006',
             item: 'prepare meals'
           }
         ]
