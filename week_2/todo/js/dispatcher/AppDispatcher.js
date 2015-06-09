@@ -1,3 +1,7 @@
+// Create our own instance of FB's Dispatcher library
+// Add a handleAction helper method to our Dispatcher instance so we can ID where
+// the action came from
+
 var Dispatcher = require('flux').Dispatcher;
 
 // Create dispatcher instance

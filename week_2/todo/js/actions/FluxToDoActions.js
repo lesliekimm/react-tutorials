@@ -1,33 +1,66 @@
+// These action creator methods that correspond to the defined constants in FluxToDoConstants.
+// The actions themselves consist of an object containing the desired action constant & a data
+// payload.
+// Our Stores update & fire change events which our Controller View listens to in order to know
+// when to begin a state update.
+
+// We use Dispatcher's handleAction method to pass an actionType constant & associated data to
+// our Dispatcher.
+
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var FluxToDoConstants = require('../constants/FluxToDoConstants');
 
 // Define action object
 var FluxToDoActions = {
+    // Add item to To Do list
+    // item is prop from toDo item in ToDoData
+    addToDoItem: function(item, update) {
+      AppDispatcher.handleAction({
+        actionType: FluxToDoConstants.TODO_ADD,
+        item: item,
+        update: update
+      })
+    },
 
-  // Add item to ToDo list
-  addToList: function(toDoID, update) {
+    // Remove item from To Do list and add to Completed list
+    completedToDoItem: function(item) {
+      AppDispatcher.handleAction({
+        actionType: FluxToDoConstants.TODO_COMPLETE,
+        item: item
+      })
+    },
 
-  },
+    // Update ToDo visiblity status
+    updateToDoVisible: function(toDoVisible) {
+      AppDispatcher.handleAction({
+        actionType: FluxToDoConstants.TODO_VISIBLE,
+        toDoVisible: toDoVisible
+      })
+    },
 
-  // Add to Complete List and remove from ToDo List
-  completeItem: function(toDoID) {
+    // Update Completed visiblity status
+    updateCompletedVisible: function(completedVisible) {
+      AppDispatcher.handleAction({
+        actionType: FluxToDoConstants.COMPLETED_VISIBLE,
+        completedVisible: completedVisible
+      })
+    },
 
-  },
+    // Set currently selected To Do items
+    selectToDoItem: function(index) {
+      AppDispatcher.handleAction({
+        actionType: FluxToDoConstants.SET_SELECTED,
+        data: index
+      })
+    },
 
-  // Set currently selected to do item
-  selectToDoItem: function(index) {
-
-  },
-
-  // Update ToDo visibility status
-  updateToDoVisible: function(toDoVisible) {
-
-  },
-
-  // Update complete visibility status
-  updateCompleteVisible: function(completeVisible) {
-
-  }
+    // Receive initial To Do items data
+    receiveToDo: function(data) {
+      AppDispatcher.handleAction({
+        actionType: FluxToDoConstants.RECEIVE_DATA,
+        data: data
+      })
+    }
 };
 
 module.exports = FluxToDoActions;
