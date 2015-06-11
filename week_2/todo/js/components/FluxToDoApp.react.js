@@ -63,7 +63,7 @@ var FluxToDoApp = React.createClass({
       <div className="flux-toDo-app">
         <FluxToDoList items={this.state.toDoList} selected={this.state.selectedToDoItem} />
         <FluxToDo list={this.state.toDoItems} count={this.state.toDoCount} toDoVisible={this.state.toDoVisible} />
-        <FluxCompleted list={this.state.completedItems} completedCount={this.state.completedCount} completedVisible={this.state.completedVisible} />
+        <FluxCompleted completedList={this.state.completedItems} completedCount={this.state.completedCount} completedVisible={this.state.completedVisible} />
       </div>
     );
   },
