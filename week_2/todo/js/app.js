@@ -13,7 +13,7 @@ ToDoAPI.getToDoListData();
 // Render FluxToDoApp Controller View
 React.render(
   <FluxToDoApp />,
-  document.getElementById('flux-todo')
+  document.getElementById('to-do-app')
 );
 
 // Next we are going to create our own FB Dispatcher & add a handleAction helper

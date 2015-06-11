@@ -1,7 +1,7 @@
 {
   "name": "todo",
   "version": "1.0.0",
-  "description": "",
+  "description": "To Do App",
   "main": "js/app.js",
   "scripts": {
     "start": "watchify -o js/bundle.js -v -d .",

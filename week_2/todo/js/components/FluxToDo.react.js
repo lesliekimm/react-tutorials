@@ -22,7 +22,7 @@ var FluxToDo = React.createClass({
   // Render To Do View
   render: function() {
     var self = this;
-    var list = this.props.items;
+    var list = this.props.list;
 
     return (
       <div className={"flux-toDo " + (this.props.visible ? 'active' : '') }>
