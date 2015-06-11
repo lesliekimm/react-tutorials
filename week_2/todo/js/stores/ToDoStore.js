@@ -8,7 +8,7 @@ var _toDo = {}, _toDoVisible = false;
 
 // Add To Do item to list
 function add(item, update) {
-  update.addToList = item in _toDo ? _toDo[item].addToList = true : false;
+  update.addedToList = item in _toDo ? _toDo[item].addedToList = true : false;
   _toDo[item] = _.extend({}, _toDo[item], update)
 }
 
@@ -19,7 +19,7 @@ function setToDoVisible(toDoVisible) {
 
 // Remove item from To Do list
 function removeToDoItem(item) {
-  deleted _toDo[item];
+  delete _toDo[item];
 }
 
 // Extend ToDo Store with EventEmitter to add eventing capabilities

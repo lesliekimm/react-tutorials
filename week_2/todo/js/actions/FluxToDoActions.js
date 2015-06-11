@@ -1,4 +1,4 @@
-// These action creator methods that correspond to the defined constants in FluxToDoConstants.
+// These action creator methods correspond to the defined constants in FluxToDoConstants.
 // The actions themselves consist of an object containing the desired action constant & a data
 // payload.
 // Our Stores update & fire change events which our Controller View listens to in order to know
@@ -23,10 +23,11 @@ var FluxToDoActions = {
     },
 
     // Remove item from To Do list and add to Completed list
-    completedToDoItem: function(item) {
+    completedToDoItem: function(item, update) {
       AppDispatcher.handleAction({
         actionType: FluxToDoConstants.TODO_COMPLETE,
-        item: item
+        item: item,
+        update: update
       })
     },
 

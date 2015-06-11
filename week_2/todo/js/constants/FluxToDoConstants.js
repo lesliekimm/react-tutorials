@@ -4,8 +4,8 @@ var keyMirror = require('react/lib/keyMirror');
 module.exports = keyMirror({
   TODO_ADD: null,           // Add item to ToDo list
   TODO_COMPLETE: null,      // Remove item from ToDo list and add to Completed list
-  TODO_VISIBLE: null,       // Shows ToDo list
-  COMPLETED_VISIBLE: null,  // Shows Completed list
+  TODO_VISIBLE: null,       // Shows or hides ToDo list
+  COMPLETED_VISIBLE: null,  // Shows or hides Completed list
   SET_SELECTED: null,       // Select an item from ToDo list
   RECEIVE_DATA: null        // Load our mock data
 });

@@ -8,9 +8,8 @@ var _completed = {}, _completedVisible = false;
 
 // Add item to completed
 function add(item, update) {
-  update.addToCompleteList = item in _completed ?
-    _completed[item].addToCompletedList = true : false;
-  _completed[item] = _.extend({}, _completed[item], update)
+  update.addedToCompleteList = item in _completed ? _completed[item].addedToCompletedList = true : false;
+  _completed[item] = _.extend({}, _completed[item], update);
 }
 
 // Set completed list visiblity

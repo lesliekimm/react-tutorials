@@ -25,15 +25,15 @@ function setSelected(index) {
   _selected = _toDoList.variants[index];
 }
 
-// Extend ToDoStore with EventEmitter to add eventing capabilities
+// Extend ToDoListStore with EventEmitter to add eventing capabilities
 // These methods can be called after require'ing our Store w/in a View
 var ToDoListStore = _.extend({}, EventEmitter.prototype, {
-  // Return To Do data
+  // Return To Do List data
   getToDoList: function() {
     return _toDoList;
   },
 
-  // Return selected To Do items
+  // Return selected To Do item
   getSelected: function() {
     return _selected;
   },

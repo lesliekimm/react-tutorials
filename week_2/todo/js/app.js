@@ -15,3 +15,7 @@ React.render(
   <FluxToDoApp />,
   document.getElementById('flux-todo')
 );
+
+// Next we are going to create our own FB Dispatcher & add a handleAction helper
+// method to our Dispatcher instance so we can ID where the action came from.
+// /dispatcher/AppDispatcher.js
