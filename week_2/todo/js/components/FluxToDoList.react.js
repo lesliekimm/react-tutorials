@@ -7,7 +7,7 @@ var FluxToDoList = React.createClass({
   addToDoItem: function(event) {
     var itemID = this.props.selected.itemID;
     var update = {
-      item = this.props.selected.item;
+      item: this.props.selected.item
     }
     FluxToDoActions.addToDoItem(itemID, update);
     FLuxToDoActions.updateToDoVisible(true);
