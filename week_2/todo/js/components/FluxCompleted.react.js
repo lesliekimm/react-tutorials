@@ -39,7 +39,7 @@ var FluxCompleted = React.createClass({
             })}
           </ul>
         </div>
-        <button type="button" className="view-toDo" onClick={this.openToDo} disabled={Object.keys(this.props.list).length > 0 ? "" : "disabled"}>View To Do List</button>
+        <button type="button" className="view-completed" onClick={this.openToDo} disabled={Object.keys(this.props.list).length > 0 ? "" : "disabled"}>View To Do List</button>
       </div>
     );
   }
