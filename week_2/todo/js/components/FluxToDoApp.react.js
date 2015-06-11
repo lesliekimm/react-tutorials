@@ -12,7 +12,7 @@ var ToDoStore = require('../stores/ToDoStore');
 var CompletedStore = require('../stores/CompletedStore');
 var FluxToDo = require('./FluxToDo.react');
 var FluxToDoList = require('./FluxToDoList.react');
-var FluxCompletedList = require('./FluxCompletedList.react');
+var FluxCompleted = require('./FluxCompleted.react');
 
 // Method to retrieve state from stores
 // Create a public method to call public methods on Stores to retrieve their
