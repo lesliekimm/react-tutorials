@@ -6,7 +6,7 @@ module.exports = {
     var data = JSON.parse(localStorage.getItem('toDoList'));
     FluxToDoActions.receiveToDoList(data);    // defined in FluxToDoActions
   }
-}
+};
 
 // First crated mock data: ../ToDoData.js
 // We now have a sample API call

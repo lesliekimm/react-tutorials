@@ -1,3 +1,7 @@
+// To model after the scotch.io tutorial of selecting different types of beer for a
+// shopping cart, I provided a list of items that can be selected as to-do items for
+// the to-do app.
+
 module.exports = {
   // Load Mock To Do items into localStorage
   init: function() {
@@ -8,8 +12,8 @@ module.exports = {
     localStorage.setItem('toDoList', JSON.stringify([
       {
         id: '12345',
-        name: 'Items'
-        description: 'A list of To Do items that can be selected.'
+        name: 'Items',
+        description: 'A list of To Do items that can be selected.',
         variants: [
           {
             itemID: '0001',

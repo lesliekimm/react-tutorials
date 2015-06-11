@@ -6,7 +6,7 @@ var Dispatcher = require('flux').Dispatcher;
 
 // Create dispatcher instance
 // Source code: https://github.com/facebook/flux/blob/master/src/Dispatcher.js
-var AppDispatcher = new Dispatcher());
+var AppDispatcher = new Dispatcher();
 
 // Convenience method to handle dispatch requests:
 // We receive an action from an action creator & have our Dispatcher dispatch
