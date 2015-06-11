@@ -7,9 +7,9 @@ var _ = require('underscore');
 var _completed = {}, _completedVisible = false;
 
 // Add item to completed
-function add(item, update) {
-  update.addedToCompleteList = item in _completed ? _completed[item].addedToCompletedList = true : false;
-  _completed[item] = _.extend({}, _completed[item], update);
+function add(itemID, update) {
+  update.addedToCompleteList = itemID in _completed ? _completed[itemID].addedToCompletedList = true : false;
+  _completed[itemID] = _.extend({}, _completed[itemID], update);
 }
 
 // Set completed list visiblity
@@ -58,7 +58,7 @@ AppDispatcher.register(function(payload) {
   switch(action.actionType) {
     // Responde to TODO_COMPLETE action
     case FluxToDoConstants.TODO_COMPLETE:
-      add(action.item, action.update);
+      add(action.itemID, action.update);
       break;
 
     // Respond to COMPLETED_VISIBLE
