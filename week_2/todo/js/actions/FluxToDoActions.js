@@ -14,19 +14,19 @@ var FluxToDoConstants = require('../constants/FluxToDoConstants');
 var FluxToDoActions = {
     // Add item to To Do list
     // item is prop from toDo item in ToDoData
-    addToDoItem: function(item, update) {
+    addToDoItem: function(itemID, update) {
       AppDispatcher.handleAction({
         actionType: FluxToDoConstants.TODO_ADD,
-        item: item,
+        itemID: itemID,
         update: update
       })
     },
 
     // Remove item from To Do list and add to Completed list
-    completedToDoItem: function(item, update) {
+    completedToDoItem: function(itemID, update) {
       AppDispatcher.handleAction({
         actionType: FluxToDoConstants.TODO_COMPLETE,
-        item: item,
+        itemID: itemID,
         update: update
       })
     },
