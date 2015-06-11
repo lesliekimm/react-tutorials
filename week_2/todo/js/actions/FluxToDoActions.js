@@ -14,28 +14,42 @@ var FluxToDoConstants = require('../constants/FluxToDoConstants');
 var FluxToDoActions = {
     // Add item to To Do list
     // item is prop from toDo item in ToDoData
-    addToDoItem: function(itemID, update) {
+    addItem: function(itemID) {
       AppDispatcher.handleAction({
-        actionType: FluxToDoConstants.TODO_ADD,
+        actionType: FluxToDoConstants.LIST_ADD,
         itemID: itemID,
-        update: update
       })
     },
 
-    // Remove item from To Do list and add to Completed list
-    completedToDoItem: function(itemID, update) {
+    // Remove item from To Do list
+    removeItem: function(itemID) {
       AppDispatcher.handleAction({
-        actionType: FluxToDoConstants.TODO_COMPLETE,
+        actionType: FluxToDoConstants.LIST_REMOVE,
+        itemID: itemID
+      })
+    },
+
+    // Add item to Completed List
+    addCompletedItem: function(itemID) {
+      AppDispatcher.handleAction({
+        actionType: FluxToDoConstants.COMPLETE_ADD,
         itemID: itemID,
-        update: update
+      })
+    },
+
+    // Remove item from Completed list
+    removeCompletedItem: function(itemID) {
+      AppDispatcher.handleAction({
+        actionType: FluxToDoConstants.COMPLETE_REMOVE,
+        itemID: itemID
       })
     },
 
     // Update ToDo visiblity status
-    updateToDoVisible: function(toDoVisible) {
+    updateListVisible: function(listVisible) {
       AppDispatcher.handleAction({
-        actionType: FluxToDoConstants.TODO_VISIBLE,
-        toDoVisible: toDoVisible
+        actionType: FluxToDoConstants.LIST_VISIBLE,
+        listVisible: listVisible
       })
     },
 
@@ -48,7 +62,7 @@ var FluxToDoActions = {
     },
 
     // Set currently selected To Do items
-    selectToDoItem: function(index) {
+    selectItem: function(index) {
       AppDispatcher.handleAction({
         actionType: FluxToDoConstants.SET_SELECTED,
         data: index

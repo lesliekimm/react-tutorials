@@ -7,7 +7,7 @@
    // Listening for Store's change events
 
 var React = require('react');
-var ToDoListStore = require('../stores/ToDoListStore');
+var ItemsListStore = require('../stores/ItemsListStore');
 var ToDoStore = require('../stores/ToDoStore');
 var CompletedStore = require('../stores/CompletedStore');
 var FluxToDo = require('./FluxToDo.react');
@@ -20,8 +20,8 @@ var FluxCompleted = require('./FluxCompleted.react');
 // Called first during getInitialState and when a Store's change event is received.
 function getToDoState() {
   return {
-    toDoList: ToDoListStore.getToDoList(),
-    selectedToDoItem: ToDoListStore.getSelected(),
+    toDoList: ItemsListStore.getToDoList(),
+    selectedToDoItem: ItemsListStore.getSelected(),
     toDoItems: ToDoStore.getToDoItems(),
     toDoCount: ToDoStore.getToDoCount(),
     toDoVisible: ToDoStore.getToDoVisible(),

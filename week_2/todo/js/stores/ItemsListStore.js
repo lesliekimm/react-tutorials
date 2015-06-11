@@ -10,27 +10,27 @@ var _ = require('underscore');
 // testing, and so on.
 
 // Define initial data points
-var _toDoList = {}, _selected = null;
+var _itemsList = {}, _selected = null;
 
 // Define private methods loadToDoDta and setSelected
 
 // Method to load to do data from mock API
-function loadToDoListData(data){
-  _toDoList = data[0];
+function loadItemsData(data){
+  _itemsList = data[0];
   _selected = data[0].variants[0];
 }
 
 // Method to set the currently selected To Do items
 function setSelected(index) {
-  _selected = _toDoList.variants[index];
+  _selected = _itemsList.variants[index];
 }
 
 // Extend ToDoListStore with EventEmitter to add eventing capabilities
 // These methods can be called after require'ing our Store w/in a View
-var ToDoListStore = _.extend({}, EventEmitter.prototype, {
+var ItemsListStore = _.extend({}, EventEmitter.prototype, {
   // Return To Do List data
-  getToDoList: function() {
-    return _toDoList;
+  getItemsList: function() {
+    return _itemsList;
   },
 
   // Return selected To Do item
@@ -66,7 +66,7 @@ AppDispatcher.register(function(payload) {
   switch(action.actionType) {
     // Respond to RECEIVE_DATA action
     case FluxToDoConstants.RECEIVE_DATA:
-      loadToDoListData(action.data);
+      loadItemsList(action.data);
       break;
 
     // Respond to SET_SELECTED action
@@ -79,9 +79,9 @@ AppDispatcher.register(function(payload) {
   }
 
   // If action was responded to, emit change events
-  ToDoListStore.emitChange();
+  ItemsListStore.emitChange();
 
   return true;
 });
 
-module.exports = ToDoListStore;
+module.exports = ItemsListStore;

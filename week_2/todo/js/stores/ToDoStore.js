@@ -7,14 +7,8 @@ var _ = require('underscore');
 var _toDo = {}, _toDoVisible = false;
 
 // Add To Do item to list
-function add(itemID, update) {
-  update.addedToList = itemID in _toDo ? _toDo[itemID].addedToList = true : false;
-  _toDo[itemID] = _.extend({}, _toDo[itemID], update)
-}
-
-// Set ToDo visibility
-function setToDoVisible(toDoVisible) {
-  _toDoVisible = toDoVisible;
+function addToDoItem(itemID) {
+  _toDo[itemID] = _.extend({}, _toDo[itemID])
 }
 
 // Remove item from To Do list
@@ -22,16 +16,16 @@ function removeToDoItem(itemID) {
   delete _toDo[itemID];
 }
 
+// Set ToDo visibility
+function setToDoVisible(toDoVisible) {
+  _toDoVisible = toDoVisible;
+}
+
 // Extend ToDo Store with EventEmitter to add eventing capabilities
 var ToDoStore = _.extend({}, EventEmitter.prototype, {
   // Return To Do items
   getToDoItems: function() {
     return _toDo;
-  },
-
-  // Return number of items in To Do list
-  getToDoCount: function() {
-    return Object.keys(_toDo).length;
   },
 
   // Return To Do visibility
@@ -61,19 +55,19 @@ AppDispatcher.register(function(payload) {
   var text;
 
   switch(action.actionType) {
-    // Respond to TODO_ADD action
-    case FluxToDoConstants.TODO_ADD:
-      add(action.itemID, action.update);
+    // Respond to LIST_ADD action
+    case FluxToDoConstants.LIST_ADD:
+      addToDoItem(action.itemID);
       break;
 
-    // Respond to TODO_VISIBLE action
-    case FluxToDoConstants.TODO_VISIBLE:
-      setToDoVisible(action.toDoVisible);
-      break;
-
-    // Respond to TODO_COMPLETE
-    case FluxToDoConstants.TODO_COMPLETE:
+    // Respond to LIST_REMOVE
+    case FluxToDoConstants.LIST_REMOVE:
       removeToDoItem(action.itemID);
+      break;
+
+    // Respond to LIST_VISIBLE action
+    case FluxToDoConstants.LIST_VISIBLE:
+      setToDoVisible(action.toDoVisible);
       break;
 
     default:

@@ -7,9 +7,13 @@ var _ = require('underscore');
 var _completed = {}, _completedVisible = false;
 
 // Add item to completed
-function add(itemID, update) {
-  update.addedToCompleteList = itemID in _completed ? _completed[itemID].addedToCompletedList = true : false;
-  _completed[itemID] = _.extend({}, _completed[itemID], update);
+function addCompletedItem(itemID) {
+  _completed[itemID] = _.extend({}, _completed[itemID]);
+}
+
+// Remove item from completed
+function removeCompletedItem(itemID) {
+  delete _completed[itemID];
 }
 
 // Set completed list visiblity
@@ -22,11 +26,6 @@ var CompletedStore = _.extend({}, EventEmitter.prototype, {
     // Return completed items
     getCompletedItems: function() {
       return _completed;
-    },
-
-    // Return number of items in Completed cart
-    getCompletedCount: function() {
-      return Object.keys(_completed).length;
     },
 
     // Return completed visiblity state
@@ -56,9 +55,14 @@ AppDispatcher.register(function(payload) {
   var text;
 
   switch(action.actionType) {
-    // Responde to TODO_COMPLETE action
-    case FluxToDoConstants.TODO_COMPLETE:
-      add(action.itemID, action.update);
+    // Responde to COMPLETE_ADD action
+    case FluxToDoConstants.COMPLETE_ADD:
+      addCopmletedItem(action.itemID);
+      break;
+
+    // Respond to COMPLETE_REMOVE action
+    case FluxToDoConstants.COMPLETE_REMOVE:
+      removeCompletedItem(action.itemID);
       break;
 
     // Respond to COMPLETED_VISIBLE
