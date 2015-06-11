@@ -8,7 +8,7 @@
     "build": "browserify . | uglifyjs -cm > js/bundle.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Leslie Kim",
   "license": "ISC",
   "dependencies": {
     "flux": "^2.0.3",
@@ -23,9 +23,9 @@
     "watchify": "^3.2.2"
   }
   "browserify": {
-  "transform": [
-    "reactify",
-    "envify"
-  ]
-}
+    "transform": [
+      "reactify",
+      "envify"
+    ]
+  }
 }
