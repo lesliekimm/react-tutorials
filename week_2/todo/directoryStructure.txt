@@ -1,0 +1,24 @@
+css/
+---- app.css
+js/
+---- actions/
+-------- FluxToDoActions.js     // App's action creators
+---- components/
+-------- FluxToDoApp.react.js   // To Do List Component
+-------- FluxToDoList.react.js  // Main Controller View
+-------- FluxCompleted.react.js // Completed List Component
+---- constants/
+-------- FluxToDoConstnats.js   // App's action constants
+---- dispatcher/
+--------AppDispatcher.js        // App's dispatcher
+---- stores/
+-------- CompletedStore.js      // Complete List Store
+-------- ToDoListStore.js       // Main ToDo List Store
+-------- ToDoStore.js           // ToDo List Store
+---- utils/
+-------- ToDoAPI.js             // Mock APi
+---- app.js                     // Main app.js file
+---- ToDoData.js                // Mock Data
+directoryStructure.txt
+index.html
+package.json
