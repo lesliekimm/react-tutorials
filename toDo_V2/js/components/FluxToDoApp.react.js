@@ -14,6 +14,9 @@ function getToDoState() {
     toDoList: ToDoStore.getList(),
     toDoCount: ToDoStore.getListCount(),
     listVisible: ToDoStore.getListVisible()
+    completedList: CompletedStore.getCompletedList(),
+    completedCount: CompletedStore.getCompletedCount(),
+    completedVisible: CompletedStore.getCompletedVisible()
   };
 }
 
@@ -28,12 +31,14 @@ var FluxToDoApp = React.createClass({
   componentDidMount: function() {
     OptionsStore.addChangeListener(this._onChange);
     ToDoStore.addChangeListener(this._onChange);
+    CompletedStore.addChangeListener(this._onChange);
   },
 
   // Remove change listers from stores
   componentWillUnmount: function() {
     OptionsStore.removeChangeListener(this._onChange);
     ToDoStore.removeChangeListener(this._onChange);
+    CompletedStore.removeChangeListener(this._onChange);
   },
 
   // Render our child components, passing state via props
@@ -41,6 +46,7 @@ var FluxToDoApp = React.createClass({
   	return (
       <div className="flux-to-do-app">
       <FluxToDo list={this.state.toDoList} count={this.state.toDoCount} visible={this.state.listVisible} />
+      <FluxCompleted completedList={this.state.completedList} completedCount={this.state.completedList} completedVisible={this.state.completedVisible} />
       <FluxOptions options={this.state.options} toDoList={this.state.toDoList} selected={this.state.selectedOption} />
       </div>
   	);
