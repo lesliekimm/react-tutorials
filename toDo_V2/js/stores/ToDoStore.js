@@ -71,9 +71,9 @@ AppDispatcher.register(function(payload) {
       setListVisible(action.listVisible);
       break;
 
-    // Respond to TODO_REMOVE action
-    case FluxToDoConstants.TODO_REMOVE:
-      removeItem(action.optionID);
+    // Respond to TODO_COMPLETE action
+    case FluxToDoConstants.TODO_COMPLETE:
+      removeOption(action.optionID);
       break;
 
     default:

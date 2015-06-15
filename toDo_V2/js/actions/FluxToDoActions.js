@@ -3,7 +3,7 @@ var FluxToDoConstants = require('../constants/FluxToDoConstants');
 
 // Define action methods
 var FluxToDoActions = {
-  // Receive inital product data
+  // Receive inital to do options data
   receiveOptions: function(data) {
     AppDispatcher.handleAction({
       actionType: FluxToDoConstants.RECEIVE_OPTIONS,
@@ -11,7 +11,7 @@ var FluxToDoActions = {
     })
   },
 
-  // Set currently selected product variation
+  // Set currently selected to do option variation
   selectOption: function(index) {
     AppDispatcher.handleAction({
       actionType: FluxToDoConstants.SET_SELECTED,
@@ -31,7 +31,7 @@ var FluxToDoActions = {
   // Remove item from To Do List
   removeFromList: function(optionID) {
     AppDispatcher.handleAction({
-      actionType: FluxToDoConstants.TODO_REMOVE,
+      actionType: FluxToDoConstants.TODO_COMPLETE,
       optionID: optionID
     })
   },
@@ -42,9 +42,32 @@ var FluxToDoActions = {
       actionType: FluxToDoConstants.TODO_VISIBLE,
       listVisible: listVisible
     })
-    console.log("blah", listVisible);
-  }
+  },
 
+  // Adds item to Completed List
+  addToComplete: function(optionID, update) {
+    AppDispatcher.handleAction({
+      actionType: FluxToDoConstants.COMPLETE_ADD,
+      optionID: optionID,
+      update: update
+    })
+  },
+
+  // Removes item from Completed List
+  removeFromCompleted: function(optionID) {
+    AppDispatcher.handleAction({
+      actionType: FluxToDoConstants.COMPLETE_REMOVE,
+      optionID: optionID
+    })
+  },
+
+  // Update Completed List visibility status
+  updateCompletedVisible: function(completedVisible) {
+    AppDispatcher.handleAction({
+      actionType: FluxToDoConstants.COMPLETE_VISIBLE,
+      completedVisible: completedVisible
+    })
+  }
 };
 
 module.exports = FluxToDoActions;

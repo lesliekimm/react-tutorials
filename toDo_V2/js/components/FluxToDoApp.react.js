@@ -1,8 +1,10 @@
 var React = require('react');
 var OptionsStore = require('../stores/OptionsStore');
 var ToDoStore = require('../stores/ToDoStore');
+var CompletedStore = require('../stores/CompletedStore.js');
 var FluxOptions = require('./FluxOptions.react');
 var FluxToDo = require('./FluxToDo.react');
+var FluxCompleted = require('./FluxCompleted.react');
 
 // Method to retrieve state from Stores
 function getToDoState() {

@@ -13,7 +13,6 @@ var FluxToDoList = React.createClass({
   openList: function(){
     console.log("here in wonderland");
     FluxToDoActions.updateListVisible(true);
-
   },
 
   // Remove option from To Do List via Actions
@@ -34,7 +33,7 @@ var FluxToDoList = React.createClass({
               return (
                 <li key={options}>
                   <h1 className="name">{toDoList[options].toDoOption}</h1>
-                  <button type="button" className="remove-to-do" onClick={self.removeFromList.bind(self, options)}>Remove</button>
+                  <button type="button" className="remove-to-do" onClick={self.removeFromList.bind(self, options)}>Completed</button>
                 </li>
             )
             })}
