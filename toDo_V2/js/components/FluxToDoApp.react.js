@@ -13,7 +13,7 @@ function getToDoState() {
     selectedOption: OptionsStore.getSelected(),
     toDoList: ToDoStore.getList(),
     toDoCount: ToDoStore.getListCount(),
-    listVisible: ToDoStore.getListVisible()
+    listVisible: ToDoStore.getListVisible(),
     completedList: CompletedStore.getCompletedList(),
     completedCount: CompletedStore.getCompletedCount(),
     completedVisible: CompletedStore.getCompletedVisible()
