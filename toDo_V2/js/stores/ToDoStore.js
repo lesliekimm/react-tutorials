@@ -4,33 +4,60 @@ var FluxToDoConstants = require('../constants/FluxToDoConstants');
 var _ = require('underscore');
 
 // Define initial data points
-var _toDoList = {}, _listVisible = false;
+var _toDoList = {};
 
-// Add option to To Do List
-function add(optionID, update) {
-  _toDoList[optionID] = _.extend({}, _toDoList[optionID], update);
+// Create a To Do Item
+function create(text) {
+  // Use current timestamp and random # to create id
+  var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+  _toDoList[id] = {
+    id: id,
+    complete: false,
+    text: text
+  };
 }
 
-// Set list visibility
-function setListVisible(listVisible) {
-  _listVisible = listVisible;
+// Update a To Do Item
+function update(id, update) {
+  _toDoList[id] = assign({}, _toDoList[id], updates);
 }
 
-// Remove option from To Do List
-function removeOption(optionID) {
-  delete _toDoList[optionID];
+// Updated all the To Do items
+function updateAll(updates) {
+  for (var id in _toDoList) {
+    update(id, updates);
+  }
+}
+
+// Delete a To Do Item
+function destroy(id) {
+  delete _toDoList[id];
+}
+
+// Delete all To Do items
+function destroyCompleted() {
+  for (var id in _toDoList) {
+    if (_toDoList[id].complete) {
+      destroy(id);
+    }
+  }
 }
 
 // Extend To Do Store with EventEmitter to add eventing capabilities
 var ToDoStore = _.extend({}, EventEmitter.prototype, {
+  // Find out if all To Do Items are marked as completed
+  areAllComplete: function() {
+    for (var id in _toDoList) {
+      if(!_toDoList[id].complete) {
+        return false;
+      }
+    }
+    return true;
+  },
+
   // Return To Do List
   getList: function() {
     return _toDoList;
-  },
-
-  // Return # of options in To Do List
-  getListCount: function() {
-    return Object.keys(_toDoList).length;
   },
 
   // Return To Do List visibility state
@@ -55,25 +82,54 @@ var ToDoStore = _.extend({}, EventEmitter.prototype, {
 });
 
 // Register callback with AppDispatcher
-AppDispatcher.register(function(payload) {
-  var action = payload.action;
+AppDispatcher.register(function(action) {
+  // var action = payload.action;
   var text;
 
   switch(action.actionType) {
-
-    // Respond to TODO_ADD action
-    case FluxToDoConstants.TODO_ADD:
-      add(action.optionID, action.update);
+    case FluxToDoConstants.TODO_CREATE:
+      text = action.text.trim();
+      if (text !== '') {
+        create(text);
+        ToDoStore.emitChange();
+      }
       break;
 
-    // Respond to TODO_VISIBLE action
-    case FluxToDoConstants.TODO_VISIBLE:
-      setListVisible(action.listVisible);
+    case FluxToDoConstants.TODO_TOGGLE_COMPLETE_ALL:
+      if (ToDoStore.areAllComplete()) {
+        updateAll({complete: false});
+      } else {
+        updateAll({complete: true});
+      }
+      ToDoStore.emitChange();
       break;
 
-    // Respond to TODO_COMPLETE action
+    case FluxToDoConstants.TODO_UNDO_COMPLETE:
+      update(action.id, {complete: false});
+      ToDoStore.emitChange();
+      break;
+
     case FluxToDoConstants.TODO_COMPLETE:
-      removeOption(action.optionID);
+      update(action.id, {complete: true});
+      ToDoStore.emitChange();
+      break;
+
+    case FluxToDoConstants.TODO_UPDATE_TEXT:
+      text = action.text.trim();
+      if (text !== '') {
+        update(action.id, {text: text});
+        ToDoStore.emitChange();
+      }
+      break;
+
+    case FluxToDoConstants.TODO_DESTROY:
+      destroy(action.id);
+      ToDoStore.emitChange();
+      break;
+
+    case FluxToDoConstants.TODO_DESTROY_COMPLETED:
+      destroyCompleted();
+      ToDoStore.emitChange();
       break;
 
     default:

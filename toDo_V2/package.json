@@ -4,27 +4,35 @@
   "description": "to do list components with flux",
   "main": "js/app.js",
   "scripts": {
-    "start": "watchify -o js/bundle.js -v -d .",
-    "build": "browserify . | uglifyjs -cm > js/bundle.js"
+    "start": "watchify -o js/bundle.js -v -d js/app.js",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js",
+    "test": "jest"
   },
   "author": "leslie kim",
   "license": "ISC",
   "dependencies": {
-    "flux": "^2.0.0",
-    "react": "^0.12.0",
+    "flux": "^2.0.3",
+    "keymirror": "^0.1.1",
+    "object-assign": "^3.0.0",
+    "react": "^0.12.2",
     "underscore": "^1.7.0"
   },
   "devDependencies": {
-    "browserify": "~6.2.0",
-    "envify": "~3.0.0",
+    "browserify": "^10.2.4",
+    "envify": "^3.4.0",
+    "jest-cli": "^0.4.13",
     "react": "^0.12.0",
-    "reactify": "^0.15",
-    "watchify": "~2.1.0"
+    "reactify": "^1.1.1",
+    "uglify-js": "^2.4.23",
+    "watchify": "^3.2.2"
   },
   "browserify": {
     "transform": [
       "reactify",
       "envify"
     ]
+  },
+  "jest": {
+    "rootDir": "./js"
   }
 }

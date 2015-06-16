@@ -1,22 +1,16 @@
 var React = require('react');
-var OptionsStore = require('../stores/OptionsStore');
+// var OptionsStore = require('../stores/OptionsStore');
 var ToDoStore = require('../stores/ToDoStore');
-var CompletedStore = require('../stores/CompletedStore.js');
-var FluxOptions = require('./FluxOptions.react');
+// var CompletedStore = require('../stores/CompletedStore.js');
+// var FluxOptions = require('./FluxOptions.react');
 var FluxToDo = require('./FluxToDo.react');
-var FluxCompleted = require('./FluxCompleted.react');
+// var FluxCompleted = require('./FluxCompleted.react');
 
 // Method to retrieve state from Stores
 function getToDoState() {
   return {
-    options: OptionsStore.getOptions(),
-    selectedOption: OptionsStore.getSelected(),
-    toDoList: ToDoStore.getList(),
-    toDoCount: ToDoStore.getListCount(),
-    listVisible: ToDoStore.getListVisible(),
-    completedList: CompletedStore.getCompletedList(),
-    completedCount: CompletedStore.getCompletedCount(),
-    completedVisible: CompletedStore.getCompletedVisible()
+    allToDos: ToDoStore.getList(),
+    areAllComplete: ToDoStore.areAllComplete()
   };
 }
 
@@ -24,30 +18,32 @@ function getToDoState() {
 var FluxToDoApp = React.createClass({
   // Get initial state from stores
   getInitialState: function() {
+    console.log("initializing");
     return getToDoState();
   },
 
   // Add change listeners to stores
   componentDidMount: function() {
-    OptionsStore.addChangeListener(this._onChange);
+    console.log("mounting");
+    console.log("allToDos: ", this.state.allToDos);
+    console.log("areAllComplete: ", this.state.areAllComplete);
     ToDoStore.addChangeListener(this._onChange);
-    CompletedStore.addChangeListener(this._onChange);
+
+    console.log("addedChangeListener");
   },
 
   // Remove change listers from stores
   componentWillUnmount: function() {
-    OptionsStore.removeChangeListener(this._onChange);
     ToDoStore.removeChangeListener(this._onChange);
-    CompletedStore.removeChangeListener(this._onChange);
+    console.log("removedChangeListener");
   },
 
   // Render our child components, passing state via props
   render: function() {
+    console.log("in render");
   	return (
-      <div className="flux-to-do-app">
-      <FluxToDo list={this.state.toDoList} count={this.state.toDoCount} visible={this.state.listVisible} />
-      <FluxCompleted completedList={this.state.completedList} completedCount={this.state.completedList} completedVisible={this.state.completedVisible} />
-      <FluxOptions options={this.state.options} toDoList={this.state.toDoList} selected={this.state.selectedOption} />
+      <div>
+        <FluxToDo allToDos={this.state.allToDos} areAllComplete={this.state.areAllComplete} />
       </div>
   	);
   },
