@@ -5,6 +5,10 @@ class ToDoActions {
     this.dispatch(text);
   }
 
+  update(id, updates) {
+    this.dispatch(id, updates);
+  }
+
   toggleComplete(toDo) {
     this.dipatch(toDo);
   }
