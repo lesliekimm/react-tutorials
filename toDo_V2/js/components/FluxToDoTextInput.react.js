@@ -1,10 +1,10 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
 
-var ENTER_KEY_CODE = 13;
+var ENTER_KEY_CODE = 13;        // key code for enter button
 
 var FluxToDoTextInput = React.createClass({
-
+  // Declare props are specific JS primitive
   propTypes: {
     className: ReactPropTypes.string,
     id: ReactPropTypes.string,
@@ -38,6 +38,7 @@ var FluxToDoTextInput = React.createClass({
 
   _save: function() {
     this.props.onSave(this.state.value);
+    console.log('on save', this.props.value);
     this.setState({
       value: ''
     });
@@ -49,6 +50,7 @@ var FluxToDoTextInput = React.createClass({
     });
   },
 
+  // When enter button is pressed, call _save function
   _onKeyDown: function(event) {
     if (event.keyCode === ENTER_KEY_CODE) {
       this._save();

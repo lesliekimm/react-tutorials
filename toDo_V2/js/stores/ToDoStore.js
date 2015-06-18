@@ -2,14 +2,17 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var FluxToDoConstants = require('../constants/FluxToDoConstants');
 var _ = require('underscore');
+var assign = require('object-assign');
 
 // Define initial data points
 var _toDoList = {};
 
 // Create a To Do Item
-function create(text) {
+function addToDoItem(text) {
   // Use current timestamp and random # to create id
-  var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+  // var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+  var id = (+new Date());
+  console.log('created id ', id);
   _toDoList[id] = {
     id: id,
     complete: false,
@@ -18,27 +21,28 @@ function create(text) {
 }
 
 // Update a To Do Item
-function update(id, update) {
-  _toDoList[id] = assign({}, _toDoList[id], updates);
+function updateToDoItem(id, update) {
+  _toDoList[id] = assign({}, _toDoList[id], update);
 }
 
 // Updated all the To Do items
-function updateAll(updates) {
+function updateAllToDoItems(updates) {
   for (var id in _toDoList) {
     update(id, updates);
   }
 }
 
 // Delete a To Do Item
-function destroy(id) {
+function deleteToDoItem(id) {
+  console.log('deleting?? ', id);
   delete _toDoList[id];
 }
 
 // Delete all To Do items
-function destroyCompleted() {
+function deleteAllCompletedItems() {
   for (var id in _toDoList) {
     if (_toDoList[id].complete) {
-      destroy(id);
+      deleteToDoItem(id);
     }
   }
 }
@@ -48,6 +52,8 @@ var ToDoStore = _.extend({}, EventEmitter.prototype, {
   // Find out if all To Do Items are marked as completed
   areAllComplete: function() {
     for (var id in _toDoList) {
+      console.log('id ', id);
+      console.log('length', _toDoList.length);
       if(!_toDoList[id].complete) {
         return false;
       }
@@ -87,49 +93,56 @@ AppDispatcher.register(function(action) {
   var text;
 
   switch(action.actionType) {
-    case FluxToDoConstants.TODO_CREATE:
+    // Add To Do item
+    case FluxToDoConstants.TODO_ADD:
       text = action.text.trim();
       if (text !== '') {
-        create(text);
+        addToDoItem(text);
         ToDoStore.emitChange();
       }
       break;
 
-    case FluxToDoConstants.TODO_TOGGLE_COMPLETE_ALL:
+    // Mark To Do item as complete
+    case FluxToDoConstants.TODO_COMPLETE:
+    updateToDoItem(action.id, {complete: true});
+        ToDoStore.emitChange();
+      break;
+
+    // Delete a To Do item
+    case FluxToDoConstants.TODO_DELETE:
+      deleteToDoItem(action.id);
+      ToDoStore.emitChange();
+      break;
+
+    // Delete all To Do completed items
+    case FluxToDoConstants.TODO_DELETE_ALL_COMPLETED:
+      deleteAllCompletedItems();
+      ToDoStore.emitChange();
+      break;
+
+    // Toggle all To Do items
+    case FluxToDoConstants.TODO_TOGGLE_ALL:
       if (ToDoStore.areAllComplete()) {
-        updateAll({complete: false});
+        updateAllToDoItems({complete: false});
       } else {
-        updateAll({complete: true});
+        updateAllToDoItems({complete: true});
       }
       ToDoStore.emitChange();
       break;
 
+    // Mark a completed To Do item as not complete
     case FluxToDoConstants.TODO_UNDO_COMPLETE:
-      update(action.id, {complete: false});
+      updateToDoItem(action.id, {complete: false});
       ToDoStore.emitChange();
       break;
 
-    case FluxToDoConstants.TODO_COMPLETE:
-      update(action.id, {complete: true});
-      ToDoStore.emitChange();
-      break;
-
+    // Update text of To Do item
     case FluxToDoConstants.TODO_UPDATE_TEXT:
       text = action.text.trim();
       if (text !== '') {
-        update(action.id, {text: text});
+        updateToDoItem(action.id, {text: text});
         ToDoStore.emitChange();
       }
-      break;
-
-    case FluxToDoConstants.TODO_DESTROY:
-      destroy(action.id);
-      ToDoStore.emitChange();
-      break;
-
-    case FluxToDoConstants.TODO_DESTROY_COMPLETED:
-      destroyCompleted();
-      ToDoStore.emitChange();
       break;
 
     default:

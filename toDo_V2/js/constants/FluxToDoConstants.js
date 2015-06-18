@@ -1,21 +1,13 @@
+// keyMirror allows us to mirror our keys so that our value matches our key definition
 var keyMirror = require('react/lib/keyMirror');
 
 // Define action constants
 module.exports = keyMirror({
-  TODO_CREATE: null,
-  TODO_COMPLETE: null,
-  TODO_DESTROY: null,
-  TODO_DESTROY_COMPLETED: null,
-  TODO_TOGGLE_COMPLETE_ALL: null,
-  TODO_UNDO_COMPLETE: null,
-  TODO_UPDATE_TEXT: null
-
-  // TODO_ADD: null,         // Adds option to list
-  // TODO_COMPLETE: null,    // Removes option from list
-  // TODO_VISIBLE: null,     // Shows or hides the list
-  // COMPLETE_ADD: null,     // Adds completed item Completed List
-  // COMPLETE_REMOVE: null,  // Remove completed item from Completed List
-  // COMPLETE_VISIBLE: null, // Shows or hides the Completed List
-  // SET_SELECTED: null,     // Selects a to do option
-  // RECEIVE_OPTIONS: null   // Loads our mock data
+  TODO_ADD: null,                   // add a To Do item to the list
+  TODO_COMPLETE: null,              // mark a To Do item as complete
+  TODO_DELETE: null,                // delete a To Do item
+  TODO_DELETE_ALL_COMPLETED: null,  // delete all completed To Do items
+  TODO_TOGGLE_ALL: null,            // toggle all items as complete or not complete
+  TODO_UNDO_COMPLETE: null,         // mark a completed To Do item as not complete
+  TODO_UPDATE_TEXT: null            // update the text of a To Do item
 });

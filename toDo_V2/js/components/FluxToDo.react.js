@@ -6,59 +6,67 @@ var FluxToDoTextInput = require('./FluxToDoTextInput.react');
 
 // Flux To Do List view
 var FluxToDo = React.createClass({
+  // Declare props are specific JS primitive
   propTypes: {
-    allToDos: ReactPropTypes.object.isRequired,
-    areAllComplete: ReactPropTypes.bool.isRequired
+    allToDos: ReactPropTypes.object.isRequired,       // make sure alToDos exist
+    areAllComplete: ReactPropTypes.bool.isRequired    // make sure areAllComplete exists and is bool
   },
 
   // Render cart view
   render: function() {
-    console.log("in FluxToDo render ");
-
     // if (Object.keys(this.props.allToDos).length < 1) {
     //   console.log("nothing here");
     //   return null;
     // }
 
-    console.log("have items");
-    var allToDos = this.props.allToDos;
-    var toDos = [];
+    var allToDos = this.props.allToDos;       // declare local allToDos object
+    var toDos = [];                           // declare local toDos array
 
+    console.log('allToDos locally declared ', allToDos);
+    console.log('toDos locally declared ', toDos);
+
+    // Add To Do item to toDos array for each key
     for (var key in allToDos) {
       toDos.push(<FluxToDoItem key={key} toDo={allToDos[key]} />);
+      console.log('length', toDos.length);
     }
 
     return (
       <div id="header">
-      <h1>todos</h1>
-        <FluxToDoTextInput
-          id="new-todo"
-          placeholder="to do item"
-          onSave={this._onSave}
-        />
+        <h1>todos</h1>
+        <div id="elements">
+          <FluxToDoTextInput
+            id="new-todo"
+            placeholder="to do item"
+            onSave={this._onSave}
+            />
+        </div>
+        <ul id="todo-list">{toDos}</ul>
       </div>
-      // <div id="main">
-      //   <input
-      //     id="toggle-all"
-      //     type="checkbox"
-      //     onChange={this._onToggleCompleteAll}
-      //     checked={this.props.areAllCompleted ? 'checked' : ''}
-      //   />
-      //   <label htmlFor="toggle-all">Mark all as complete</label>
-      //   <ul id="todo-list">{toDos}</ul>
-      // </div>
     );
   },
 
+
   _onSave: function(text) {
     if (text.trim()){
-      FluxToDoActions.create(text);
+      text = text;
+      FluxToDoActions.add(text);
     }
   },
 
-  _onToggleCompleteAll: function() {
-    FluxToDoActions.toggleCompleteAll();
-  }
+  // _onToggleCompleteAll: function() {
+  //   FluxToDoActions.toggleCompleteAll();
+  // }
+
+  // <label htmlFor="toggle-all">Mark all as complete</label>
+  // <input
+  //   id="toggle-all"
+  //   type="checkbox"
+  //   className="main"
+  //   onChange={this._onToggleCompleteAll}
+  //   checked={this.props.areAllCompleted ? 'checked' : ''}
+  // />
+
 
     // var self = this, toDoList = this.props.list;
     // return (

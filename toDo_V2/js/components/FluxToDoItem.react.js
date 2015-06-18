@@ -6,11 +6,12 @@ var FluxToDoTextInput = require('./FluxToDoTextInput.react');
 var cx = require('react/lib/cx');
 
 var FluxToDoItem = React.createClass({
-
+  // Declare props are specific JS primitive
   propTypes: {
    toDo: ReactPropTypes.object.isRequired
   },
 
+  // Return initial state (currently no editing)
   getInitialState: function() {
     return {
       isEditing: false
@@ -19,11 +20,13 @@ var FluxToDoItem = React.createClass({
 
   render: function() {
     var toDo = this.props.toDo;
-
     var input;
+
+    console.log('toDo in ToDoItem ', toDo);
+
     if (this.state.isEditing) {
       input =
-        <ToDoTextInput
+        <FluxToDoTextInput
           className="edit"
           onSave={this._onSave}
           value={toDo.text}
@@ -47,7 +50,7 @@ var FluxToDoItem = React.createClass({
           <label onDoubleClick={this._onDoubleClick}>
             {toDo.text}
           </label>
-          <button className="destroy" onClick={this._onDestroyClick} />
+          <button className="remove" onClick={this._onDestroyClick} />
         </div>
         {input}
       </li>
@@ -62,19 +65,14 @@ var FluxToDoItem = React.createClass({
     this.setState({isEditing: true});
   },
 
-  /**
-   * Event handler called within TodoTextInput.
-   * Defining this here allows TodoTextInput to be used in multiple places
-   * in different ways.
-   * @param  {string} text
-   */
   _onSave: function(text) {
     FluxToDoActions.updateText(this.props.toDo.id, text);
+    console.log('id: ', this.props.toDo.id);
     this.setState({isEditing: false});
   },
 
   _onDestroyClick: function() {
-    FluxToDoActions.destroy(this.props.toDo.id);
+    FluxToDoActions.remove(this.props.toDo.id);
   }
 });
 
