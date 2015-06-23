@@ -35,8 +35,11 @@ class ToDoStore {
     };
   }
 
-  handleToggleComplete(id, update) {
-    toDoItems[id] = assign({}, toDoItems[id], update);
+  handleToggleComplete(toDo) {
+    var complete: toDo.complete;
+    return {
+      toDo.complete ? toDo.complete=false : toDo.complete=true;
+    }
   }
 
   handleRemoveToDo(id) {

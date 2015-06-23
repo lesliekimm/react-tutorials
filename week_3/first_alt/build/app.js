@@ -22375,7 +22375,7 @@ var FavoritesStore = require('./FavoritesStore');
     });
   };
 
-  LocationStore.prototype.setFavorites=function(location) {"use strict";
+	LocationStore.prototype.setFavorites=function(location) {"use strict";
     this.waitFor(FavoritesStore);
 
     var favoritedLocations = FavoritesStore.getState().locations;
@@ -22383,9 +22383,10 @@ var FavoritesStore = require('./FavoritesStore');
     this.resetAllFavorites();
 
     favoritedLocations.forEach(function(location)  {
-      // Find each location in the array
+      // find each location in the array
       for (var i = 0; i < this.locations.length; i += 1) {
-        // Set has_favorite to true
+
+        // set has_favorite to true
         if (this.locations[i].id === location.id) {
           this.locations[i].has_favorite = true;
           break;
