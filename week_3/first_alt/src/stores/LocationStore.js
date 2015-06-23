@@ -3,7 +3,7 @@
 var alt = require('../alt');
 var LocationActions = require('../actions/LocationActions');
 var LocationData = require('../utils/LocationData');
-var FavoriteStore = require('./FavoritesStore');
+var FavoritesStore = require('./FavoritesStore');
 
 // Create a class for the store.
 class LocationStore {

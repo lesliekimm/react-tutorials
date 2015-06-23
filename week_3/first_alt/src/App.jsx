@@ -1,5 +1,5 @@
 React = require('react');
 var Locations = require('./components/Locations.jsx');
 
-React.render(<Locations />, document.getElementById('ReactApp')
+React.render(<Locations />, document.getElementById('FirstApp')
 );

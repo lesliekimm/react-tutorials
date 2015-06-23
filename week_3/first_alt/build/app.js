@@ -22144,7 +22144,7 @@ module.exports = require('./lib/React');
 React = require('react');
 var Locations = require('./components/Locations.jsx');
 
-React.render(React.createElement(Locations, null), document.getElementById('ReactApp')
+React.render(React.createElement(Locations, null), document.getElementById('FirstApp')
 );
 
 },{"./components/Locations.jsx":186,"react":182}],184:[function(require,module,exports){
@@ -22181,8 +22181,8 @@ function LocationActions(){"use strict";}
 		this.dispatch(errorMessage);
 	};
 
-	LocationActions.prototype.favoriteLocation=function(locationId) {"use strict";
-		this.dispatch(locationId);
+	LocationActions.prototype.favoriteLocation=function(location) {"use strict";
+		this.dispatch(location);
 	};
 
 
@@ -22191,13 +22191,11 @@ module.exports = alt.createActions(LocationActions);
 
 },{"../alt":185}],185:[function(require,module,exports){
 // Create instance of alt.
-
 var Alt = require('alt');
 
 // Instantiates a Flux dispatcher & gives you methods to create
 // your actions & stores.
 var alt = new Alt();
-
 var chromeDebug = require('alt/utils/chromeDebug')
 
 chromeDebug(alt);
@@ -22297,17 +22295,17 @@ var alt = require('../alt');
 var LocationActions = require('../actions/LocationActions');
 
 
-    function FavoritesStore() {"use strict";
-      this.locations = [];
+  function FavoritesStore() {"use strict";
+    this.locations = [];
 
-      this.bindListeners({
-          addFavoriteLocation: LocationActions.FAVORITE_LOCATION
-      });
-    }
+    this.bindListeners({
+      addFavoriteLocation: LocationActions.FAVORITE_LOCATION
+    });
+  }
 
-    FavoritesStore.prototype.addFavoriteLocation=function(location) {"use strict";
-      this.locations.push(location);
-    };
+  FavoritesStore.prototype.addFavoriteLocation=function(location) {"use strict";
+    this.locations.push(location);
+  };
 
 
 module.exports = alt.createStore(FavoritesStore, 'FavoritesStore');
@@ -22318,7 +22316,7 @@ module.exports = alt.createStore(FavoritesStore, 'FavoritesStore');
 var alt = require('../alt');
 var LocationActions = require('../actions/LocationActions');
 var LocationData = require('../utils/LocationData');
-var FavoriteStore = require('./FavoritesStore');
+var FavoritesStore = require('./FavoritesStore');
 
 // Create a class for the store.
 

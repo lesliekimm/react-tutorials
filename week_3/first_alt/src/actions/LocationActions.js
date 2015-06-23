@@ -31,8 +31,8 @@ class LocationActions {
 		this.dispatch(errorMessage);
 	}
 
-	favoriteLocation(locationId) {
-		this.dispatch(locationId);
+	favoriteLocation(location) {
+		this.dispatch(location);
 	}
 }
 
