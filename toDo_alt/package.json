@@ -2,7 +2,7 @@
   "name": "todo_alt",
   "version": "1.0.0",
   "description": "",
-  "main": "js/app.js",
+  "main": "src/app.js",
   "scripts": {
     "start": "watchify -o src/bundle.js -v -d src/app.js",
     "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > src/bundle.min.js",
