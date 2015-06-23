@@ -22,6 +22,7 @@ var ToDoApp = React.createClass({
   // To listen to changes, use componentDidMount component
   // and add an event handlers
   componentDidMount() {
+    console.log("here");
     ToDoStore.listen(this._onChange);
   },
 
