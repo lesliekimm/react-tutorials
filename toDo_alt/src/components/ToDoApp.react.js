@@ -36,7 +36,7 @@ var ToDoApp = React.createClass({
   render() {
     return (
       <div id="container">
-        <ToDo toDos={ this.state.allToDOs } />
+        <ToDo allToDos={this.state.allToDos} areAllComplete={this.state.areAllComplete} />
       </div>
     );
   }
