@@ -20,10 +20,14 @@ class ToDoActions {
     this.dispatch(id);
   }
 
-  // Update text of To Do item
-  updateText(id, update) {
-    this.dispatch(id, update);
+  areAllComplete() {
+    this.dispatch();
   }
+
+  // // Update text of To Do item
+  // updateText(id, update) {
+  //   this.dispatch(id, update);
+  // }
 }
 
 module.exports = alt.createActions(ToDoActions);

@@ -2,11 +2,12 @@ var React = require('react');
 var AltContainer = require('alt/AltContainer');
 var ToDoStore = require('../stores/ToDoStore');
 var ToDoActions = require('../actions/ToDoActions');
+var ToDo = require('../components/ToDo.react');
 
 function getToDoState() {
   return {
     allToDos: ToDoStore.getState().toDoList,
-    areALlComplete: ToDoStore.areAllComplete()
+    areAllComplete: ToDoStore.handleAreAllComplete()
   }
 }
 
@@ -15,27 +16,27 @@ var ToDoApp = React.createClass({
   // Every alt store has a method which returns its state
   // Use React's getInitialState to set initial store state
   getInitialState() {
-    return ToDoStore.getState();
+    return getToDoState();
   },
 
   // To listen to changes, use componentDidMount component
   // and add an event handlers
   componentDidMount() {
-    ToDoStore.listen(this.onChange);
+    ToDoStore.listen(this._onChange);
   },
 
   // Remove event listener
   componentWillUnmount() {
-    ToDoStore.unlistem(this.onChange);
+    ToDoStore.unlistem(this._onChange);
   },
 
-  onChange() {
+  _onChange() {
     this.setState(getToDoState());
   },
 
   render() {
     return (
-      <div id="container">
+      <div className="container">
         <ToDo allToDos={this.state.allToDos} areAllComplete={this.state.areAllComplete} />
       </div>
     );

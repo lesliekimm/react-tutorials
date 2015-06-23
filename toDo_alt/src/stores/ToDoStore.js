@@ -14,18 +14,16 @@ class ToDoStore {
       handleAddToDo: ToDoActions.ADD_TODO,
       handleToggleComplete: ToDoActions.TOGGLE_COMPLETE,
       handleRemoveToDo: ToDoActions.REMOVE_TODO,
-      handleUpdateText: ToDoActions.UPDATE_TEXT
-    });
-
-    this.exportPublicMethods({
-      areAllComplete: this.areAllComplete,
-      getList: this.getList,
-      getListVisible: this.listVisible
+      handleAreAllComplete: ToDoActions.ARE_ALL_COMPLETE
     });
   }
 
   // Action handlers: Define methods in store's prototype
   // that will deal with actions
+  update(id, update) {
+    this.toDoList[id]=assign({}, toDoList[id], update);
+  }
+
   handleAddToDo(text) {
     text = text.trim()
     if (text === '') {
@@ -40,10 +38,6 @@ class ToDoStore {
     };
   }
 
-  update(id, update) {
-    this.toDoList[id]=assign({}, toDoList[id], update);
-  }
-
   handleToggleComplete(id) {
     var complete = !this.toDoList[id].omplete;
     this.update(id, {complete});
@@ -53,21 +47,13 @@ class ToDoStore {
     delete this.toDoList[id];
   }
 
-  handleUpdateText(id, text) {
-    toDoList[id] = assign({}, toDoList[id], text);
-  }
-
-  areAllComplete() {
-    for (var id in toDoItems) {
-      if (!toDoItems[id].complete) {
+  handleAreAllComplete() {
+    for (var id in toDoList) {
+      if (!toDoList[id].complete) {
         return false;
       }
     }
     return true;
-  }
-
-  getList() {
-    return toDoList;
   }
 }
 

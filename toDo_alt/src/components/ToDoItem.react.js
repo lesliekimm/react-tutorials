@@ -21,11 +21,11 @@ var ToDoItem = React.createClass({
         {toDo.text}
       </li>
     );
-  }
+  },
 
   onToggleComplete() {
     ToDoActions.toggleComplete(this.props.toDo.id);
-  }
+  },
 
   onSave(text) {
     ToDoActions.updateText(this.props.toDo.id, text);

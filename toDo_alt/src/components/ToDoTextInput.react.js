@@ -14,20 +14,22 @@ var ToDoTextInput = React.createClass({
   render() {
     return (
       <input
-        className="form-control"
-        onBlur={ this._save }
-        onKeyDown={ this._onKeyDown }
+      className="form-control"
+      onBlur={ this._save }
+      onKeyDown={ this._onKeyDown }
       />
     );
-  }
+  },
 
   _save(event) {
     this.props.onSave(event.target.value);
-  }
+  },
 
-  if (event.keyCode === ENTER_KEY_CODE) {
+  _onKeyDown(event) {
+    if (event.keyCode === ENTER_KEY_CODE) {
       this._save(event);
+    }
   }
-}
+});
 
 module.exports = ToDoTextInput;

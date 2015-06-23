@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactPropTypes = React.PropTypes;
-var ToDoItem = require('../stores/ToDoItem');
+var ToDoItem = require('../components/ToDoItem.react');
+var ToDoTextInput = require('../components/ToDoTextInput.react')
 var ToDoActions = require('../actions/ToDoActions');
 
 var ToDo = React.createClass({
@@ -19,7 +20,8 @@ var ToDo = React.createClass({
 
     return (
       <div id="elements">
-        <TodoTextInput
+        <h1>todos</h1>
+        <ToDoTextInput
           id="new-todo"
           placeholder="to do item"
           onSave={this.onSave}
