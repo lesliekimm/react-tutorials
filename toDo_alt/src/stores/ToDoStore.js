@@ -7,9 +7,7 @@ class ToDoStore {
     // Instance variables defined anywhere in the store will
     // become the state
     // Can update in prototype methods
-    this.state = {
-      toDoList: []
-    };
+    this.toDoList = {};
 
     // Bind action handlers to our actions
     this.bindListeners({
@@ -29,27 +27,34 @@ class ToDoStore {
   // Action handlers: Define methods in store's prototype
   // that will deal with actions
   handleAddToDo(text) {
+    text = text.trim()
+    if (text === '') {
+      return false
+    }
+
     var id = (+new Date());
-    toDoList[id] = {
+    this.toDoList[id] = {
       id: id,
       complete: false,
       text: text
     };
   }
 
-  handleToggleComplete(toDo) {
-    var complete: toDo.complete;
-    return {
-      
-    }
+  update(id, update) {
+    this.toDoList[id]=assign({}, toDoList[id], update);
+  }
+
+  handleToggleComplete(id) {
+    var complete = !this.toDoList[id].omplete;
+    this.update(id, {complete});
   }
 
   handleRemoveToDo(id) {
-    delete toDoItems[id];
+    delete this.toDoList[id];
   }
 
   handleUpdateText(id, text) {
-    toDoItems[id] = assign({}, toDoItems[id], text);
+    toDoList[id] = assign({}, toDoList[id], text);
   }
 
   areAllComplete() {
@@ -62,11 +67,7 @@ class ToDoStore {
   }
 
   getList() {
-    return toDoItems;
-  }
-
-  getListVisible() {
-    return listVisible;
+    return toDoList;
   }
 }
 
