@@ -21,7 +21,15 @@ class LocationStore {
       handleLocationsFailed: LocationActions.LOCATIONS_FAILED,
       setFavorites: LocationActions.FAVORITE_LOCATION
 		});
+
+		this.exportPublicMethods({
+			getLocation: this.getLocation
+		});
+
+		this.exportAsync(LocationData);
 	}
+
+
 
 	// Define methods in store's prototype that deals with actions
 	// Aka action handlers
@@ -74,7 +82,7 @@ class LocationStore {
   }
 
 	getLocation(id) {
-		var {locations } = this.getState();
+		var { locations } = this.getState();
 		for (var i = 0; i < locations.lengh; i += 1) {
 			if (locations[i].id === id) {
 				return locations[i];

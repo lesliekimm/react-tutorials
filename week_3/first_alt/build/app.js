@@ -2139,64 +2139,32 @@ function assign(target) {
 var process = module.exports = {};
 var queue = [];
 var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
 
 function drainQueue() {
     if (draining) {
         return;
     }
-    var timeout = setTimeout(cleanUpNextTick);
     draining = true;
-
+    var currentQueue;
     var len = queue.length;
     while(len) {
         currentQueue = queue;
         queue = [];
-        while (++queueIndex < len) {
-            currentQueue[queueIndex].run();
+        var i = -1;
+        while (++i < len) {
+            currentQueue[i]();
         }
-        queueIndex = -1;
         len = queue.length;
     }
-    currentQueue = null;
     draining = false;
-    clearTimeout(timeout);
 }
-
 process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
+    queue.push(fun);
+    if (!draining) {
         setTimeout(drainQueue, 0);
     }
 };
 
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
 process.title = 'browser';
 process.browser = true;
 process.env = {};
@@ -22188,13 +22156,13 @@ var alt = require('../alt');
 // Create an action by creating a class
 // Class' prototype methods will become actions
 function LocationActions(){"use strict";}
-	Object.defineProperty(LocationActions.prototype,"updateLocations",{writable:true,configurable:true,value:function(locations) {"use strict";
+	LocationActions.prototype.updateLocations=function(locations) {"use strict";
 		// Dispatch payload through the Dispatcher & onto stores
 		this.dispatch(locations);
-	}});
+	};
 
 	// Fetch locations using method in LocationsFetcher.js
-	Object.defineProperty(LocationActions.prototype,"fetchLocations",{writable:true,configurable:true,value:function() {"use strict";
+	LocationActions.prototype.fetchLocations=function() {"use strict";
 		// We dispatch an event here so we can have "loading" state
 		this.dispatch();
 
@@ -22207,15 +22175,15 @@ function LocationActions(){"use strict";}
 		// 	.catch((errorMessage) => {
 		// 		this.actions.locationFailed(errorMessage);
 		// 	});
-	}});
+	};
 
-	Object.defineProperty(LocationActions.prototype,"locationsFailed",{writable:true,configurable:true,value:function(errorMessage) {"use strict";
+	LocationActions.prototype.locationsFailed=function(errorMessage) {"use strict";
 		this.dispatch(errorMessage);
-	}});
+	};
 
-	Object.defineProperty(LocationActions.prototype,"favoriteLocation",{writable:true,configurable:true,value:function(locationId) {"use strict";
+	LocationActions.prototype.favoriteLocation=function(locationId) {"use strict";
 		this.dispatch(locationId);
-	}});
+	};
 
 
 // Export
@@ -22337,9 +22305,9 @@ var LocationActions = require('../actions/LocationActions');
       });
     }
 
-    Object.defineProperty(FavoritesStore.prototype,"addFavoriteLocation",{writable:true,configurable:true,value:function(location) {"use strict";
+    FavoritesStore.prototype.addFavoriteLocation=function(location) {"use strict";
       this.locations.push(location);
-    }});
+    };
 
 
 module.exports = alt.createStore(FavoritesStore, 'FavoritesStore');
@@ -22368,30 +22336,38 @@ var FavoriteStore = require('./FavoritesStore');
       handleLocationsFailed: LocationActions.LOCATIONS_FAILED,
       setFavorites: LocationActions.FAVORITE_LOCATION
 		});
+
+		this.exportPublicMethods({
+			getLocation: this.getLocation
+		});
+
+		this.exportAsync(LocationData);
 	}
+
+
 
 	// Define methods in store's prototype that deals with actions
 	// Aka action handlers
 	// Stores automatically emit a change event when action is dispatched
 	// through the store & action handler ends. To suppress change event,
 	// return false from action handler.
-	Object.defineProperty(LocationStore.prototype,"handleUpdateLocations",{writable:true,configurable:true,value:function(locations) {"use strict";
+	LocationStore.prototype.handleUpdateLocations=function(locations) {"use strict";
 		this.locations = locations;
     this.errorMessage = null;
 		// Optionally return false to suppress store change event
-	}});
+	};
 
-  Object.defineProperty(LocationStore.prototype,"handleFetchLocations",{writable:true,configurable:true,value:function() {"use strict";
+  LocationStore.prototype.handleFetchLocations=function() {"use strict";
     // Reset the array while we're fetching new locations so React can be
     // smart and render a spinner for us since the data is empty
     this.locations = [];
-  }});
+  };
 
-  Object.defineProperty(LocationStore.prototype,"handleLocationsFailed",{writable:true,configurable:true,value:function(errorMessage) {"use strict";
+  LocationStore.prototype.handleLocationsFailed=function(errorMessage) {"use strict";
     this.errorMessage = errorMessage;
-  }});
+  };
 
-  Object.defineProperty(LocationStore.prototype,"resetAllFavorites",{writable:true,configurable:true,value:function() {"use strict";
+  LocationStore.prototype.resetAllFavorites=function() {"use strict";
     this.locations = this.locations.map(function(location)  {
       return {
         id: location.id,
@@ -22399,9 +22375,9 @@ var FavoriteStore = require('./FavoritesStore');
         has_favorite: false
       };
     });
-  }});
+  };
 
-  Object.defineProperty(LocationStore.prototype,"setFavorites",{writable:true,configurable:true,value:function(location) {"use strict";
+  LocationStore.prototype.setFavorites=function(location) {"use strict";
     this.waitFor(FavoritesStore);
 
     var favoritedLocations = FavoritesStore.getState().locations;
@@ -22418,10 +22394,10 @@ var FavoriteStore = require('./FavoritesStore');
         }
       }
     }.bind(this));
-  }});
+  };
 
-	Object.defineProperty(LocationStore.prototype,"getLocation",{writable:true,configurable:true,value:function(id) {"use strict";
-		var $__0=   this.getState(),locations=$__0.locations;
+	LocationStore.prototype.getLocation=function(id) {"use strict";
+		var $__0=    this.getState(),locations=$__0.locations;
 		for (var i = 0; i < locations.lengh; i += 1) {
 			if (locations[i].id === id) {
 				return locations[i];
@@ -22429,66 +22405,60 @@ var FavoriteStore = require('./FavoritesStore');
 		}
 
 		return null;
-	}});
+	};
 
 
 module.exports = alt.createStore(LocationStore, 'LocationStore');
 
 },{"../actions/LocationActions":184,"../alt":185,"../utils/LocationData":189,"./FavoritesStore":187}],189:[function(require,module,exports){
-var LoationActions = require('../actions/LocationActions');
+var LocationActions = require('../actions/LocationActions');
 
 var mockData = [
-	{ id: 0, name: 'Abu Dhabi' },
-	{ id: 1, name: 'Berlin' },
-	{ id: 2, name: 'Bogota' },
-	{ id: 3, name: 'Buenos Aires' },
-	{ id: 4, name: 'Cairo' },
-	{ id: 5, name: 'Chicago' },
-	{ id: 6, name: 'Lima' },
-	{ id: 7, name: 'London' },
-	{ id: 8, name: 'Miami' },
-	{ id: 9, name: 'Moscow' },
-	{ id: 10, name: 'Mumbai' },
-	{ id: 11, name: 'Paris' },
-	{ id: 12, name: 'San Francisco' }
+  { id: 0, name: 'Abu Dhabi' },
+  { id: 1, name: 'Berlin' },
+  { id: 2, name: 'Bogota' },
+  { id: 3, name: 'Buenos Aires' },
+  { id: 4, name: 'Cairo' },
+  { id: 5, name: 'Chicago' },
+  { id: 6, name: 'Lima' },
+  { id: 7, name: 'London' },
+  { id: 8, name: 'Miami' },
+  { id: 9, name: 'Moscow' },
+  { id: 10, name: 'Mumbai' },
+  { id: 11, name: 'Paris' },
+  { id: 12, name: 'San Francisco' }
 ];
 
-// Simulate an XHR with setTimeout and Promise to copy fetch's API
-// XHR: XMLHttpRequest is an API available to web browser scripting languages
-// like JS to send HTTP or HTTPS requests to web server & load server response
-// data back into the script.
-
 var LocationData = {
-	fetchLocations:function() {
-		return {
-			remote:function() {
-				// Returning a Promise because that is what fetch does
-				return new Promise(function (resolve, reject) {
-					// Simulate asynchronous action where data is fetched on
-					// a remote server somewhere.
-					setTimeout(function() {
-						// Change this to false to see the error action being handled
-						if (true) {
-							// Resolve with some mock data
-							resolve(mockData);
-						}
-						else {
-							reject('Things have broken');
-						}
-					}, 250);
-				});
-			},
+  fetchLocations:function() {
+    return {
+      remote:function() {
+        return new Promise(function (resolve, reject) {
+          // simulate an asynchronous flow where data is fetched on
+          // a remote server somewhere.
+          setTimeout(function () {
 
-			local:function() {
-				// Never check locally, always fetch remotely
-				return null;
-			},
+            // change this to `false` to see the error action being handled.
+            if (true) {
+              // resolve with some mock data
+              resolve(mockData);
+            } else {
+              reject('Things have broken');
+            }
+          }, 250);
+        });
+      },
 
-			success: LocationActions.updateLocations,
-			error: LocationActions.locationsFailed,
-			loading: LocationActions.fecthLocations
-		}
-	}
+      local:function() {
+        // Never check locally, always fetch remotely.
+        return null;
+      },
+
+      success: LocationActions.updateLocations,
+      error: LocationActions.locationsFailed,
+      loading: LocationActions.fetchLocations
+    }
+  }
 };
 
 module.exports = LocationData;
