@@ -11,11 +11,8 @@ class ToDoActions {
   }
 
   // Toggle a single item as complete or undo complete
-  toggleComplete(toDo) {
-    var id = toDo.id;
-    var complete = toDo.complete;
-    var actionType = complete ? this.updateText(id, complete=false) : this.updateText(id, complete=true);
-    this.dispatch(id, actionType);
+  toggleComplete(id, complete) {
+    this.dispatch(id, complete);
   }
 
   // Remove To Do item from list

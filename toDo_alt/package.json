@@ -2,22 +2,41 @@
   "name": "todo_alt",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "js/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "watchify -o src/bundle.js -v -d src/app.js",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > src/bundle.min.js",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
+  "browserify": {
+    "transform": [
+      "babelify",
+      "envify"
+    ]
+  },
   "dependencies": {
-    "alt": "^0.16.10",
-    "react": "^0.12.2"
+    "alt": "^0.15.6",
+    "classnames": "^1.2.2",
+    "object-assign": "^2.0.0",
+    "react": "^0.13.2"
   },
   "devDependencies": {
-    "browserify": "^8.0.3",
-    "reactify": "^0.17.1"
+    "babel-jest": "^4.0.0",
+    "babelify": "^6.0.2",
+    "browserify": "^9.0.8",
+    "envify": "^3.4.0",
+    "jest-cli": "^0.4.0",
+    "reactify": "^1.1.0",
+    "watchify": "^3.2.2"
   },
-  "scripts": {
-    "build": "browserify -t [reactify --es6] src/App.jsx > build/app.js",
-    "start": "npm run build && open 'index.html' "
+  "jest": {
+    "scriptPreprocessor": "node_modules/babel-jest",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react",
+      "<rootDir>/node_modules/alt",
+      "<rootDir>/src/alt.js"
+    ]
   }
 }

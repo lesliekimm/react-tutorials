@@ -7,7 +7,9 @@ class ToDoStore {
     // Instance variables defined anywhere in the store will
     // become the state
     // Can update in prototype methods
-    this.toDoItems = [];
+    this.state = {
+      toDoList: []
+    };
 
     // Bind action handlers to our actions
     this.bindListeners({
@@ -38,7 +40,7 @@ class ToDoStore {
   handleToggleComplete(toDo) {
     var complete: toDo.complete;
     return {
-      toDo.complete ? toDo.complete=false : toDo.complete=true;
+      
     }
   }
 
